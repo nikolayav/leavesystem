@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<script th:replace="fragments/header :: headerElement"></script>
+
+<head>
+  <title>LeaveSystem Admin Dashboard</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+  <h1>LeaveSystem Admin Dashboard</h1>
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col">    
+          <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModal" aria-hidden="true">
+ 	   	    <div class="modal-dialog modal-dialog-centered" role="document">
+ 		      <div class="modal-content">
+  		        <div class="modal-header">
+  		        <div class="card-body">
+                  <form action="" th:object="${user}" method='POST' class="needs-validation" novalidate>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <div class="form-row">
+                      <label for="validationFirstName">First name</label>
+                      <input type="text" class="form-control" id="validationFirstName" required th:field="${user.firstName}">
+                      <div class="valid-feedback">
+                        Looks good!
+                      </div>                     
+                    </div>            
+                    <div class="form-row">
+                      <label for="validationMiddleName">Middle name</label>
+                      <input type="text" class="form-control" id="validationMiddleName" required th:field="${user.middleName}">
+                      <div class="valid-feedback">
+                        Looks good!
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <label for="validationLastName">Last name</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="validationLastName" aria-describedby="inputGroupPrepend" required th:field="${user.lastName}">
+                        <div class="invalid-feedback">
+                          Please choose a lastname.
+                        </div>
+                      </div>
+                   </div>
+                   <div class="form-row">
+                     <label for="validationEmail">Email\username</label>
+                     <input type="text" class="form-control" id="validationEmail" required th:field="${user.username}">
+                       <div class="invalid-feedback">
+                         Please provide a valid email.
+                      </div>      
+                    </div>
+                    <div class="form-row">
+                      <label for="validationPassword">Initial Password</label>
+                      <input type="password" class="form-control" id="validationPassword" required th:field="${user.password}">
+                    <div class="invalid-feedback">
+                      Please provide a valid password.
+                    </div>    
+                  </div>
+                  <div class="form-row">
+                <div class="dropdown">
+				<div class="dropdown">
+				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Dropdown link
+				  </a>
+				
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				    <a class="dropdown-item" href="#">Action</a>
+				    <a class="dropdown-item" href="#">Another action</a>
+				    <a class="dropdown-item" href="#">Something else here</a>
+				  </div>
+				</div>
+                  <select class="selectpicker" th:field="*{manager}">
+                      <option value="">...</option>
+                      <option th:each="user : ${users}"
+                              th:value="${user.id}"
+                              th:utext="${user.lastName}"
+					       	  th:selected="${user.manager}"/>
+                    </select>
+                    
+                 <div class="invalid-feedback">
+                   Please select a manager.
+                 </div>
+              </div>
+           </div>
+         
+           <div class="form-row">
+             <label for="validationPosition">Position</label>
+             <input type="text" class="form-control" id="validationPosition" required th:field="${user.position}">
+             <div class="invalid-feedback">
+               Please provide a valid position.
+             </div>
+         </div>
+         <div class="form-row">
+           <label for="validationPL">Total paid leave days</label>
+           <input type="text" class="form-control" id="validationPL" required th:field="${user.paidLeaveDaysLeft}">
+           <div class="invalid-feedback">
+             Please provide a valid position.
+           </div> 
+         </div>
+       <button class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createUserModal">
+  Launch demo modal
+</button>
+  </div>
+</div>
+</div>
+              
+</body>
+</html>
