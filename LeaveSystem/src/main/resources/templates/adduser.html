@@ -84,7 +84,7 @@
                 <label>Manager</label>
                 <div class="form-row">
                   <select class="selectpicker text-muted" th:field="*{manager}" data-style="btn-light">
-                    <option value="">Select Manager...</option>
+                    <option value="" hidden>Select Manager...</option>
                     <option th:each="user : ${managers}" th:value="${user.id}" th:utext="${user.firstName}+' '+${user.lastName} + ' (' +${user.position} +')'" th:selected="${user.manager}" />
                   </select>
                 </div>
@@ -94,7 +94,7 @@
                 <label>Role</label>
                 <div class="form-row">
                   <select class="selectpicker" th:field="*{role}" data-style="btn-light">
-                    <option value="">Select Role...</option>
+                    <option value="" hidden>Select Role...</option>
                     <option value="User" th:selected="${user.role}">User</option>
                     <option value="Manager" th:selected="${user.role}">Manager</option>
                     <option value="Admin" th:selected="${user.role}">System Admin</option>
@@ -110,6 +110,8 @@
 
             </div>
           </form>
+          
+          
           <div class="col">
             <button class="btn btn-info float-right" id="back" style="margin-top: -4em;">Back</button>
           </div>

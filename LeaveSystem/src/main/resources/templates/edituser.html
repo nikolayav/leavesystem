@@ -59,9 +59,8 @@
               </div>
 
               <div class="col">
-                <label>Initial Password</label> 
+                <label>Reset Password</label> 
                 <input type="password" class="form-control" th:field="${user.password}">
-                <span th:errors="*{password}" class="error text-danger"></span>
               </div>
             </div>
 
@@ -84,7 +83,7 @@
                 <label>Manager</label>
                 <div class="form-row">
                   <select name="user.manager" id="user.manager" th:field="*{manager}" class="selectpicker text-muted" data-style="btn-light">
-                    <option value="">Select Manager...</option>
+                    <option value="" hidden>Select Manager...</option>
                     <option th:each="user : ${managers}" th:value="${user.id}" th:utext="${user.firstName}+' '+${user.lastName} + ' (' +${user.position} +')'" th:selected="${user.getManager()}" />
                   </select>
                 </div>
@@ -94,7 +93,7 @@
                 <label>Role</label>
                 <div class="form-row">
                   <select class="selectpicker" th:field="*{role}" data-style="btn-light">
-                    <option value="">Select Role...</option>
+                    <option value="" hidden>Select Role...</option>
                     <option value="User">User</option>
                     <option value="Manager">Manager</option>
                     <option value="Admin">System Admin</option>

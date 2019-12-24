@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,13 +31,8 @@ public class AdminDashboardController {
 	
 	@Autowired
 	private UserRepository userRepo;
-	
-//	@GetMapping("/")
-//	public String rootView( ) {
-//		return "index";
-//	}
-	
-	@GetMapping(value = { "/admin-dashboard" })
+		
+	@GetMapping("/admin-dashboard")
 	public String showForm(Model model) {
 		User user = new User();
 		model.addAttribute("user", user);
@@ -55,6 +51,7 @@ public class AdminDashboardController {
 
 		List<User> managerList = new ArrayList<>();
 		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
+		
 		model.addAttribute("managers", managerList);
 	    
 	    return "adduser";
@@ -83,19 +80,26 @@ public class AdminDashboardController {
 		return "redirect:/admin-dashboard";
 	}
 	
-	@GetMapping(value="/edit/{id}")
+	@GetMapping("/edit/{id}")
 	public String editUserGet(@PathVariable("id") Long id, Model model) {
 		List<User> managerList = new ArrayList<>();
 		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
 		model.addAttribute("managers", managerList);
+		
+		for (int i = 0; i < managerList.size(); i++) {
+			if (id == managerList.get(i).getId()) {
+				managerList.remove(i);
+				break;
+			}
+		}
 		
 		model.addAttribute("user", userRepo.findById(id));
 	    return "edituser";
 	}
 	
 	@PostMapping(value="/edit/{id}")
-	public String editUserPost(@ModelAttribute("edituser") User user, BindingResult result) throws NotFoundException {
-	    if (result.hasErrors()) {
+	public String editUserPost(@ModelAttribute("edituser")User user, Errors errors) throws NotFoundException {
+	    if (errors.hasErrors()) {
 	        return "edit";
 	    }
 	    

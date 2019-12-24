@@ -38,8 +38,10 @@ public class UserService {
 	}
 
 	public User update(User user, String userRole) throws NotFoundException {
-		String encodedPassword = passwordEncoder.encode(user.getPassword());
-		user.setPassword(encodedPassword);
+		if (!user.getPassword().isEmpty()) {
+			String encodedPassword = passwordEncoder.encode(user.getPassword());
+			user.setPassword(encodedPassword);
+		}
 		
 		User oldUser = null;
 		Authority authority = null;	
@@ -51,7 +53,7 @@ public class UserService {
 				oldUser = oldUserOpt.get();
 				Set<Authority> userAuthorities = oldUser.getAuthorities();
 				user.setAuthorities(userAuthorities);
-	
+				user.setPassword(oldUser.getPassword());
 				for (Authority auth : userAuthorities) {
 					authority = auth;
 					break;
