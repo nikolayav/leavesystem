@@ -20,6 +20,8 @@ import com.leavesystem.entity.User;
 import com.leavesystem.repositories.UserRepository;
 import com.leavesystem.service.UserService;
 
+import javassist.NotFoundException;
+
 @Controller
 public class AdminDashboardController {
 
@@ -92,12 +94,12 @@ public class AdminDashboardController {
 	}
 	
 	@PostMapping(value="/edit/{id}")
-	public String editUserPost(@ModelAttribute("edituser") User user, BindingResult result) {
+	public String editUserPost(@ModelAttribute("edituser") User user, BindingResult result) throws NotFoundException {
 	    if (result.hasErrors()) {
 	        return "edit";
 	    }
 	    
-	    userService.save(user, user.getRole());
+	    userService.update(user, user.getRole());
 	    return "redirect:/admin-dashboard";
 	}
 }
