@@ -29,10 +29,10 @@ public class AdminDashboardController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	@GetMapping("/")
-	public String rootView( ) {
-		return "index";
-	}
+//	@GetMapping("/")
+//	public String rootView( ) {
+//		return "index";
+//	}
 	
 	@GetMapping(value = { "/admin-dashboard" })
 	public String showForm(Model model) {
