@@ -4,17 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.leavesystem.security.Authority;
 
@@ -23,35 +26,42 @@ import com.leavesystem.security.Authority;
 public class User {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(nullable = false)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Size(min=2, message = "First name should be at least two characters")
 	private String firstName;
 	
-	@Column(nullable = false)
+	@Size(min=2, message = "Middle name should be at least two characters")
 	private String middleName;
 	
-	@Column(nullable = false)
+	@Size(min=2, message = "Last name should be at least two characters")
 	private String lastName;
 	
-	@Column(nullable = false)
+	@Size(min=2, message = "Username name should be at least two characters")
 	private String username;
 	
-	@Column(nullable = false)
+	@Size(min=3, message = "Password name should be at least three characters")
 	private String password;
 	
-	@Column(nullable = false)
+	@NotNull
+	@Email(message="Please, enter a valid email address")
+	private String email;
+	
+	@NotNull(message = "Please, enter Paid Leave days")
+	@Min(value = 0, message = "Paid leave days cannot be less than 0")
 	private Integer paidLeaveDaysLeft;
 	
-	@Column(nullable = false)
+	@Size(min=2, message = "Position should be at least two characters")
 	private String position;
+	
+	@NotBlank(message = "Role cannot be blank")
+	private String role;
 	
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="manager")
 	private User manager;
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	@OneToMany(mappedBy="user")
 	private Set<Request> requests = new HashSet<>();
 
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="authUser")
@@ -88,7 +98,23 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -220,10 +246,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
-				+ ", username=" + username + ", password=" + password + ", paidLeaveDaysLeft=" + paidLeaveDaysLeft
-				+ ", position=" + position + ", manager=" + manager + ", requests=" + requests + ", authorities="
-				+ authorities + "]";
+		return firstName + " " + lastName;
 	}
 	
 	

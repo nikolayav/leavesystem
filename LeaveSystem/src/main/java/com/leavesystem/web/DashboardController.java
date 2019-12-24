@@ -24,11 +24,6 @@ public class DashboardController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	@GetMapping("/")
-	public String rootView( ) {
-		return "index";
-	}
-	
 	@GetMapping("/dashboard")
 	public String dashboard(@AuthenticationPrincipal User user, ModelMap map) {
 		map.addAttribute("user", user);
@@ -40,25 +35,5 @@ public class DashboardController {
 		map.addAttribute("user", user);
 		return "manager-dashboard";
 	}
-	
-	@GetMapping(value = { "/admin-dashboard" })
-	public String selectOptionExample1Page(Model model) {
-		User user = new User();
-		model.addAttribute("user", user);
-	
-	    List<User> list = new ArrayList<>();
-	    userRepo.findAll().forEach(list::add);
-	    model.addAttribute("users", list);
-	    
-	    return "admin-dashboard";
-	}
-	
-	
-	@PostMapping("/admin-dashboard")
-	public String addUserPost(User user) {
-		userService.save(user);
-		return "redirect:/admin-dashboard";
-	}
-	
 
 }
