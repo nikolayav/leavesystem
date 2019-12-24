@@ -83,7 +83,7 @@
               <div class="col">
                 <label>Manager</label>
                 <div class="form-row">
-                  <select name="user.manager" id="user.manager" class="selectpicker text-muted" data-style="btn-light">
+                  <select name="user.manager" id="user.manager" th:field="*{manager}" class="selectpicker text-muted" data-style="btn-light">
                     <option value="">Select Manager...</option>
                     <option th:each="user : ${managers}" th:value="${user.id}" th:utext="${user.firstName}+' '+${user.lastName} + ' (' +${user.position} +')'" th:selected="${user.getManager()}" />
                   </select>

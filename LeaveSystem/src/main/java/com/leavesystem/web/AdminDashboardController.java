@@ -9,18 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.leavesystem.entity.User;
 import com.leavesystem.repositories.UserRepository;
-import com.leavesystem.security.Authority;
 import com.leavesystem.service.UserService;
 
 @Controller
@@ -85,7 +82,7 @@ public class AdminDashboardController {
 	}
 	
 	@GetMapping(value="/edit/{id}")
-	public String editUser(@PathVariable("id") Long id, Model model) {
+	public String editUserGet(@PathVariable("id") Long id, Model model) {
 		List<User> managerList = new ArrayList<>();
 		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
 		model.addAttribute("managers", managerList);
@@ -95,10 +92,11 @@ public class AdminDashboardController {
 	}
 	
 	@PostMapping(value="/edit/{id}")
-	public String saveAppel(@ModelAttribute("edituser") User user, BindingResult result) {
+	public String editUserPost(@ModelAttribute("edituser") User user, BindingResult result) {
 	    if (result.hasErrors()) {
 	        return "edit";
 	    }
+	    
 	    userService.save(user, user.getRole());
 	    return "redirect:/admin-dashboard";
 	}
