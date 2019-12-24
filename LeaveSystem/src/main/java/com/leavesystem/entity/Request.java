@@ -13,16 +13,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Request {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
     private Date date_from;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
     private Date date_to;
@@ -51,7 +54,9 @@ public class Request {
 	@JoinColumn(name = "leavetype_id", nullable = false)
 	private LeaveType leaveType;
 
-	public Request() {}
+	public Request() {
+		this.status = false; // Added default status
+	}
 	
 	public Long getId() {
 		return id;
@@ -93,19 +98,19 @@ public class Request {
 		this.status = status;
 	}
 
-	public String getEmployee_comment() {
+	public String getEmployeeComment() {
 		return employeeComment;
 	}
 
-	public void setEmployee_comment(String employee_comment) {
+	public void setEmployeeComment(String employee_comment) {
 		this.employeeComment = employee_comment;
 	}
 
-	public String getManager_comment() {
+	public String getManagerComment() {
 		return managerComment;
 	}
 
-	public void setManager_comment(String manager_comment) {
+	public void setManagerComment(String manager_comment) {
 		this.managerComment = manager_comment;
 	}
 

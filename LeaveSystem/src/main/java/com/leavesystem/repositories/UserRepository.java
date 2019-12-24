@@ -9,7 +9,6 @@ import com.leavesystem.entity.User;
 public interface UserRepository extends CrudRepository<User, Long> {
 
 	User findByUsername(String username);
-//	List<User> findAll();
-
-	
+	List<User> findAll();
+	List<User> findAllByAuthoritiesAuthority(String authority);
 }

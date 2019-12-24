@@ -14,7 +14,7 @@ import com.leavesystem.entity.User;
 public class Authority implements GrantedAuthority{
 	private static final long serialVersionUID = 1162515822754199837L;
 	
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String authority;
 	
