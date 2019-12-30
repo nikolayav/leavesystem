@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.leavesystem.entity.Request;
 import com.leavesystem.entity.User;
-import com.leavesystem.repositories.RequestRepository;
 import com.leavesystem.service.LeaveRequestService;
 import com.leavesystem.web.requestComponents.FormInputs;
 
@@ -43,11 +42,12 @@ public class ManagerDashboardController {
 		return "manager-dashboard/review";
 	}
 	
-	@RequestMapping(value="/manager-dashboard/review/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value="/manager-dashboard/review/{id}", method = RequestMethod.POST)
 	public String manageRequest(@AuthenticationPrincipal User user, ModelMap map, Request request)
 			throws NotFoundException, GeneralSecurityException, IOException {
 		
 		map.put("message", requestService.setRequestStatus(request, user));
+		map.addAttribute("loggedUser", user);
 		
 		return "manager-dashboard";
 	}

@@ -17,15 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.leavesystem.entity.Request;
 import com.leavesystem.entity.User;
-import com.leavesystem.repositories.RequestRepository;
 import com.leavesystem.service.LeaveRequestService;
 import com.leavesystem.web.requestComponents.FormInputs;
 
 @Controller
 public class DashboardController {
-	
-	@Autowired
-	private RequestRepository requestRepository;
 
 	@Autowired
 	private LeaveRequestService requestService;
@@ -51,7 +47,7 @@ public class DashboardController {
 	@PostMapping("/dashboard/newrequest")
 	public String submitRequestTemplate(@AuthenticationPrincipal User user, Request request, ModelMap map) throws GeneralSecurityException, IOException{
 		map.addAttribute("loggedUser", user);
-		request.setEmployee(user);
+		request.setUser(user);
 		request.setCreated(Timestamp.valueOf(LocalDateTime.now()));
 		map.put("message", requestService.submitRequestStatus(request, user));
 		
@@ -70,7 +66,7 @@ public class DashboardController {
 	@PostMapping("/dashboard/history")	
 	public String submitRequestQuery(@AuthenticationPrincipal User user, ModelMap map, FormInputs formInputs) {
 		map.addAttribute("loggedUser", user);
-		map.put("requestHistory", requestRepository.findByUserAndDates(user,
+		map.put("requestHistory", requestService.findByUserAndDates(user,
 				formInputs.getDateFrom(), formInputs.getDateTo()));
 		return "/dashboard/history";
 	}

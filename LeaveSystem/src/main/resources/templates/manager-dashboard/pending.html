@@ -346,11 +346,10 @@ table.table .avatar {
 						</div>
 					</form>
 				</div>
-				<table class="table table-striped table-hover">
+				<table th:if="${!allPendingRequests.empty}" class="table table-striped table-hover">
 					<thead>
 						<tr>
-							<th>Employee</th>
-							<th>Position</th>
+							<th>Review</th>
 							<th>Submitted</th>
 							<th>Type</th>
 							<th>From</th>
@@ -366,10 +365,9 @@ table.table .avatar {
 							<td colspan="8">No requests found</td>
 						</tr>
 						<tr th:each="requestInstance : ${allPendingRequests}">
-							<td><span
-								th:text="${requestInstance.getEmployee().getFirstName()} + ' ' + ${requestInstance.getEmployee().getLastName()}"></span></td>
-							<td><span
-								th:text="${requestInstance.getEmployee().getPosition()}"></span></td>
+							<td><a th:href="@{/manager-dashboard/review/{id}(id=${requestInstance.id})}">
+								<i class="material-icons">done_all</i>
+							</a></td>
 							<td><span
 								th:text="${#dates.format(requestInstance.created, 'dd-MM-yyyy / HH:mm')}"></span></td>
 							<td><span th:text="${requestInstance.leaveType.type}"></span></td>

@@ -1,6 +1,6 @@
 package com.leavesystem.repositories;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -17,11 +17,6 @@ public interface RequestRepository extends CrudRepository<Request, Long> {
 	// Defined wrapper method to shorten method name
 	default List<Request> findByUserAndDates(User user, Date dateFrom, Date dateTo) {
 		return findByUserAndDateFromGreaterThanEqualAndDateToLessThanEqual(user, dateFrom, dateTo);
-	}
-	
-	List<Request> findByUserInAndDateFromGreaterThanEqualAndDateToLessThanEqual(List<User> users, Date dateFrom, Date dateTo);
-	default List<Request> findByUserListAndDates(List<User> users, Date dateFrom, Date dateTo) {
-		return findByUserInAndDateFromGreaterThanEqualAndDateToLessThanEqual(users, dateFrom, dateTo);
 	}
 	
 	List<Request> findByUserInAndStatusInAndDateFromGreaterThanEqualAndDateToLessThanEqual(List<User> users, List<RequestStatus> statusList, Date dateFrom, Date dateTo);

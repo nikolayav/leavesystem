@@ -223,7 +223,7 @@ table.table .avatar {
 	width: calc(100% - 250px);
 	overflow: auto;
 	padding-left: 40px;
-	padding-top : 38px;
+	padding-top: 38px;
 	padding-right: 40px;
 	padding-bottom: 40px;
 }
@@ -275,7 +275,8 @@ table.table .avatar {
 			<!-- Current page title -->
 			<div>
 				<p />
-				<h3>Submit new Leave Request</h3>
+				<h3
+					th:utext="'Accept/Reject request (id: ' + ${reviewedRequest.id} + ')'"></h3>
 			</div>
 		</div>
 	</div>
@@ -304,60 +305,63 @@ table.table .avatar {
 
 		<div class="column right-column-content main-page-content">
 			<!-- The page main content. Place everything page specific here -->
-			<div class="card-body"
-				style="width: 30em; margin: 0; padding: 0;">
-				<form action="" th:object="${request}" method='POST'
+			<div class="card-body" style="width: 30em; margin: 0; padding: 0;">
+				<form action="" th:object="${reviewedRequest}" method='POST'
 					class="needs-validation p-3 mb-2 bg-white text-dark" novalidate>
 					<input type="hidden" th:name="${_csrf.parameterName}"
 						th:value="${_csrf.token}" />
 
-					<div class="form-group">
-						<label for="inputLeaveType">Leave Type*</label> <select
-							class="form-control" id="inputLeaveType" th:field="*{leaveType}">
-							<option th:each="eachType : ${leaveTypeList}"
-								th:value="${eachType.id}" th:utext="${eachType.type}" />
-						</select>
-					</div>
-					<div class="row">
+					<!-- id, dateFrom, dateTo, created, status, employeeComment, managerComment, standin, user, leaveType -->
 
-						<div class="col-6">
-							<div class="form-group">
-								<label for="inputDateFrom">From date*</label> <input type="date"
-									class="form-control" id="inputDateFrom" required
-									th:field="*{dateFrom}">
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="form-group">
-								<label for="inputDateTo">To date*</label> <input type="date"
-									class="form-control" id="inputDateTo" required
-									th:field="*{dateTo}">
-							</div>
-						</div>
-					</div>
-
+					<input th:field="*{id}" required readonly hidden> <input
+						th:field="*{created}" required readonly hidden>
 					<div class="form-group">
-						<label for="inputStandin">Stand-in*</label> <select
-							class="form-control" id="inputStandin" required
-							th:field="*{standin}">
-							<option th:each="eachPerson : ${userList}"
-								th:value="${eachPerson.firstName} + ' ' + ${eachPerson.lastName} + ' - ' + ${eachPerson.position}"
-								th:utext="${eachPerson.firstName} + ' ' + ${eachPerson.lastName} + ' - ' + ${eachPerson.position}" />
-						</select>
+						<input th:field="*{user}"
+							th:utext="*{user.getFirstName()} + ' ' + *{user.getLastName()} + ' - ' + *{user.getPosition()}"
+							required readonly hidden>
 					</div>
 					<div class="form-group">
-						<label for="inputEmployeeComment">Comment</label>
-						<textarea class="form-control" id="inputEmployeeComment" rows="3"
-							th:field="*{employeeComment}">
+						<label for="inputLeaveType">Leave Type: </label> <input
+							th:field="*{leaveType}" th:utext="*{getLeaveType().getType()}"
+							required readonly hidden>
+					</div>
+					<div class="form-group">
+						<label for="inputDateFrom">From date: </label> <input type="date"
+							class="form-control" id="inputDateFrom" required
+							th:field="*{dateFrom}" th:utext="*{dateFrom}" readonly hidden>
+					</div>
+					<div class="form-group">
+						<label for="inputDateTo">To date: </label> <input type="date"
+							class="form-control" id="inputDateTo" required
+							th:field="*{dateTo}" th:utext="*{dateTo}" readonly hidden>
+					</div>
+					<div class="form-group">
+						<label for="inputStandin">Stand-in: </label> <input
+							th:field="*{standin}" th:utext="*{standin}" required readonly
+							hidden>
+					</div>
+					<div class="form-group">
+						<label for="inputEmployeeComment">Comment: </label>
+						<textarea class="form-control" id="inputEmployeeComment" rows="1"
+							th:field="*{employeeComment}" th:text="*{employeeComment}"
+							readonly hidden>
    						</textarea>
 					</div>
-					<div>
-						<p>
-							<i>*Required</i>
-						</p>
+					<div class="form-group">
+						<label for="inputManagerComment">Your comment: </label>
+						<textarea class="form-control" id="inputManagerComment" rows="3"
+							th:field="*{managerComment}">
+   						</textarea>
+					</div>
+					<div class="form-group">
+						<label for="inputLeaveType">Status: </label> <select
+							th:field="*{status}" required>
+							<option value="Submitted">Unchecked</option>
+							<option value="Accepted">Accept</option>
+							<option value="Rejected">Reject</option>
+						</select>
 					</div>
 					<div class="text-center">
-						<button type="reset" class="btn btn-outline-danger">Reset</button>
 						<button type="submit" class="btn btn-success">Submit</button>
 					</div>
 				</form>

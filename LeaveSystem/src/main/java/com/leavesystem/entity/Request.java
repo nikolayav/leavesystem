@@ -23,18 +23,17 @@ public class Request {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@FutureOrPresent
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
     private Date dateFrom;
 	
-	@FutureOrPresent
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
     private Date dateTo;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -133,11 +132,11 @@ public class Request {
 		this.standin = standin;
 	}
 
-	public User getEmployee() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setEmployee(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
