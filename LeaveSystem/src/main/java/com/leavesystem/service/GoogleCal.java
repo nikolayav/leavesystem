@@ -99,6 +99,8 @@ public class GoogleCal {
                 System.out.printf("%s (%s)\n", event.getSummary(), start);
             }
         }
+        
+        System.out.println(items.get(0).getId());
     }
     
     public void createEvent(String name, DateTime dateFrom, DateTime dateTo) throws GeneralSecurityException, IOException {
