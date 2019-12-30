@@ -2,6 +2,7 @@ package com.leavesystem.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.leavesystem.entity.User;
@@ -98,12 +101,50 @@ public class AdminDashboardController {
 	}
 	
 	@PostMapping(value="/edit/{id}")
-	public String editUserPost(@ModelAttribute("edituser")User user, Errors errors) throws NotFoundException {
+	public String editUserPost(@Valid @ModelAttribute User user, BindingResult errors, Model model, Long id) throws NotFoundException {
+		
 	    if (errors.hasErrors()) {
-	        return "edit";
+			List<User> managerList = new ArrayList<>();
+			userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
+			model.addAttribute("managers", managerList);
+			
+			for (int i = 0; i < managerList.size(); i++) {
+				if (id == managerList.get(i).getId()) {
+					managerList.remove(i);
+					break;
+				}
+			}
+			
+	       return "edituser";
+	    }
+	    
+	    userService.update(user, user.getRole());
+	    return "admin-dashboard";
+	}
+	
+	@GetMapping("/pwreset/{id}")
+	public String pwResetGet(@PathVariable("id") Long id, Model model) {
+		List<User> managerList = new ArrayList<>();
+		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
+		model.addAttribute("managers", managerList);
+		
+		model.addAttribute("user", userRepo.findById(id));
+	    return "pwreset";
+	}
+	
+	@PostMapping(value="/pwreset/{id}")
+	public String pwResetPost(@Valid @ModelAttribute User user, BindingResult errors, Model model, Long id) throws NotFoundException {
+		
+	    if (errors.hasErrors()) {
+			List<User> managerList = new ArrayList<>();
+			userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
+			model.addAttribute("managers", managerList);
+			
+	       return "pwreset";
 	    }
 	    
 	    userService.update(user, user.getRole());
 	    return "redirect:/admin-dashboard";
 	}
+	
 }

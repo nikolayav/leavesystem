@@ -3,55 +3,26 @@
 <head>
 <script th:replace="fragments/header :: headerElement"></script>
 <title>LeaveSystem Login</title>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link type='text/css' rel="stylesheet" href="css/main.css" />
+
 </head>
 <body>
-  <div th:replace="fragments/header :: header"></div>
-	<div class="container">
-	  <div class="card" style="width: 21.5em; margin:0 auto; margin-top:2em;"  >
-	    <div class="card-header p-3 mb-2 bg-dark text-white" style="margin-bottom: -.5rem;">
-	      <h2>Please Login</h2>
-	    </div>
-	    <div class="card-body p-3 mb-2 bg-light text-dark">
-		  <form action="" method="post">
-		  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-	      <div th:if="${param.error != null}" class="alert alert-danger" role="alert">
-	        Failed to login
-		    <div th:if="${SPRING_SECURITY_LAST_EXCEPTION != null}" >
-	          Reason: <span th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}"></span>
-		    </div>
-		  </div>	
-		  <div th:if="${param.logout != null}" class="alert alert-success" role="alert">
-		     You have been logged out.
-		  </div>	
-							
-				<div class="form-group p-3 mb-2 bg-light text-dark">
-				  <label for="username">Username</label> 
-				    <div>	
-				        <input type="text" class="form-control" id="username" name="username" />
-				  </div>
-				 
-				  <div class="form-group">
-				    <label for="password" class="col-form-label">Password</label> 
-				    <div>
-	    		      <div class="input-group">
-				        <div class="input-group-prepend">
-                          <span class="input-group-addon" id="validationTooltipUsernamePrepend"><i class="glyphicon glyphicon-lock"></i></span>
-                        </div>	
-				        <input type="password"	class="form-control" id="password" name="password" /> 
-				      </div>
-				    </div>
-				  </div>
-			   </div>
-			      <div class="row">
-				    <div class="col-6">
-					  <button type="submit" class="btn btn-info">Log in</button>
-				    </div>
-				  </div>
-				  
-			  </form>
-			  	   
-		  </div>
-		</div>
-	</div>
+<!--   <div th:replace="fragments/header :: header"></div> -->
+  <div class="wrapper">
+    <form action="" method="post" class="customform" style="margin-top: -7em; max-width: 320px">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      
+      <p class="title">Log in</p>
+      <input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus /> <i class="fa fa-user" style="margin-top: -38px;"></i> 
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" /> <i class="fa fa-key" style="margin-top: -38px;"></i>
+      <button>
+        <i class="spinner"></i> <span class="state">Log in</span>
+      </button>
+    </form>
+
+  </div>
+
 </body>
 </html>

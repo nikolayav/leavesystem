@@ -38,11 +38,6 @@ public class UserService {
 	}
 
 	public User update(User user, String userRole) throws NotFoundException {
-		if (!user.getPassword().isEmpty()) {
-			String encodedPassword = passwordEncoder.encode(user.getPassword());
-			user.setPassword(encodedPassword);
-		}
-		
 		User oldUser = null;
 		Authority authority = null;	
 		
@@ -51,9 +46,20 @@ public class UserService {
 			Optional<User> oldUserOpt = userRepo.findById(userId);
 			if (oldUserOpt.isPresent()) {
 				oldUser = oldUserOpt.get();
+				
+				String userPassword = user.getPassword();
+				
+				if (userPassword != null) {
+					String encodedPassword = passwordEncoder.encode(userPassword);
+					user.setPassword(encodedPassword);
+				} else {
+					user.setPassword(oldUser.getPassword());
+				}
+				
+				
 				Set<Authority> userAuthorities = oldUser.getAuthorities();
 				user.setAuthorities(userAuthorities);
-				user.setPassword(oldUser.getPassword());
+				
 				for (Authority auth : userAuthorities) {
 					authority = auth;
 					break;

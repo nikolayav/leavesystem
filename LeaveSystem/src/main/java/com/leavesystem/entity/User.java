@@ -17,6 +17,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.leavesystem.security.Authority;
@@ -28,12 +29,15 @@ public class User {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "First name should contain only letters")
 	@Size(min=2, message = "First name should be at least two characters")
 	private String firstName;
 	
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "Middle name should contain only letters")
 	@Size(min=2, message = "Middle name should be at least two characters")
 	private String middleName;
 	
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "Last name should contain only letters")
 	@Size(min=2, message = "Last name should be at least two characters")
 	private String lastName;
 	
@@ -43,8 +47,9 @@ public class User {
 	@Size(min=3, message = "Password name should be at least three characters")
 	private String password;
 	
-	@NotNull
-	@Email(message="Please, enter a valid email address")
+	@NotBlank
+	@Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", 
+	message="Please, enter a valid email address")
 	private String email;
 	
 	@NotNull(message = "Please, enter Paid Leave days")
@@ -54,9 +59,10 @@ public class User {
 	@Size(min=2, message = "Position should be at least two characters")
 	private String position;
 	
-	@NotBlank(message = "Role cannot be blank")
+	@NotBlank(message = "Please, select a role")
 	private String role;
 	
+	@NotNull(message = "Please, select a manager")
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="manager")
 	private User manager;
