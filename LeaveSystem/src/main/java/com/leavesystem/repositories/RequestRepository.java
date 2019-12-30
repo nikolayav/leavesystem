@@ -23,4 +23,9 @@ public interface RequestRepository extends CrudRepository<Request, Long> {
 	default List<Request> findByUserListAndDates(List<User> users, Date dateFrom, Date dateTo) {
 		return findByUserInAndDateFromGreaterThanEqualAndDateToLessThanEqual(users, dateFrom, dateTo);
 	}
+	
+	List<Request> findByUserInAndStatusInAndDateFromGreaterThanEqualAndDateToLessThanEqual(List<User> users, List<RequestStatus> statusList, Date dateFrom, Date dateTo);
+	default List<Request> findByUserListStatusAndDates(List<User> users, List<RequestStatus> statusList, Date dateFrom, Date dateTo) {
+		return findByUserInAndStatusInAndDateFromGreaterThanEqualAndDateToLessThanEqual(users, statusList, dateFrom, dateTo);
+	}
 }

@@ -35,9 +35,25 @@ public class LeaveRequestService {
 		return userRepo.findAllByRoleInAndIdNotIn(Arrays.asList("USER","MANAGER"), Arrays.asList(id));
 	}
 	
-	public void submitRequest(Request request, User user) {
+	public String submitRequestStatus(Request request, User user) {
+		if (request.getDateFrom() == null || request.getDateTo() == null) {
+			return "Request submit failed! Please, fill both From date and To date fields!";
+		}
 		requestRepo.save(request);
 		// call mailServerSendMail(Request request, User user, User user.getManager());
+		return "Request successfully submitted!";
+	}
+	
+	public Request getRequestById(Long id) throws NotFoundException {
+		if(requestRepo.existsById(id)) {
+			return requestRepo.findById(id).get();
+		} else {
+			throw new NotFoundException("Error during request processing: request not found");
+		}
+	}
+	
+	public List<User> getTeamMembers(User manager) {
+		return userRepo.findAllByManager(manager);
 	}
 	
 	public List<Request> getAllRequests(User user) {
@@ -73,6 +89,11 @@ public class LeaveRequestService {
 	
 	public List<Request> getTeamRequests(User user, FormInputs formInputs) {
 		return requestRepo.findByUserListAndDates(userRepo.findAllByManager(user), formInputs.getDateFrom(), formInputs.getDateTo());
+	}
+	
+	public List<Request> getUserPendingRequests(FormInputs formInputs) {
+		return requestRepo.findByUserListStatusAndDates(Arrays.asList(formInputs.getUser()), Arrays.asList(RequestStatus.Submitted),
+				formInputs.getDateFrom(), formInputs.getDateTo());
 	}
 	
 	public List<Request> getUserRequests(FormInputs formInputs) {

@@ -7,7 +7,7 @@ body {
 	color: #566787;
 	background: #f5f5f5;
 	font-family: 'Varela Round', sans-serif;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .table-wrapper {
@@ -212,19 +212,20 @@ table.table .avatar {
 }
 
 .right-column-content {
-	float: left;
-	margin-left: 40px;
+	float: right;
+	padding-left: 40px;
 }
 
 .main-page-content {
-	position: relative;
+	position: fixed;
 	left: 250px;
-	margin-left: 80px;
-	margin-top: 38px;
-	margin-right: 40px;
-	margin-bottom: 40px;
-	margin-top: 38px;
-	margin-top: 38px
+	height: calc(100% - 131px);
+	width: calc(100% - 250px);
+	overflow: auto;
+	padding-left: 40px;
+	padding-top : 38px;
+	padding-right: 40px;
+	padding-bottom: 40px;
 }
 
 .bottom-border {
@@ -304,10 +305,7 @@ table.table .avatar {
 		<div class="column right-column-content main-page-content">
 			<!-- The page main content. Place everything page specific here -->
 			<div class="card-body"
-				style="width: 35em; margin: 0 auto;">
-				<div class="card-header p-2 mb-2 bg-dark text-white">
-					<h5 style="margin-top: 0.5rem;">New leave request</h5>
-				</div>
+				style="width: 30em; margin: 0; padding: 0;">
 				<form action="" th:object="${request}" method='POST'
 					class="needs-validation p-3 mb-2 bg-white text-dark" novalidate>
 					<input type="hidden" th:name="${_csrf.parameterName}"

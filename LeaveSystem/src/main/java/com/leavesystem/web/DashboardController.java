@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,12 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.api.client.util.DateTime;
-import com.leavesystem.entity.*;
-import com.leavesystem.repositories.*;
-import com.leavesystem.service.GoogleCal;
-import com.leavesystem.service.UserService;
 import com.leavesystem.entity.Request;
 import com.leavesystem.entity.User;
 import com.leavesystem.repositories.RequestRepository;
@@ -57,17 +53,7 @@ public class DashboardController {
 		map.addAttribute("loggedUser", user);
 		request.setEmployee(user);
 		request.setCreated(Timestamp.valueOf(LocalDateTime.now()));
-		requestService.submitRequest(request, user);
-		map.put("message", "Request successfully submitted!");
-		
-//		request.setCreated(Timestamp.valueOf(LocalDateTime.now()));
-//		
-//		Request newRequest = requestRepo.save(request);
-//		System.out.println(newRequest.getDate_from());
-//		
-//		System.out.println(newRequest.getDate_to());;
-
-//		return "redirect:/dashboard";
+		map.put("message", requestService.submitRequestStatus(request, user));
 		
 		return "dashboard";
 	}
@@ -76,8 +62,7 @@ public class DashboardController {
 	public String viewRequestHistory(@AuthenticationPrincipal User user, ModelMap map) {
 		map.addAttribute("loggedUser", user);
 		map.addAttribute("formInputs", new FormInputs());
-		map.put("requestHistory", requestService.getAllRequests(user));
-		map.put("deleteInputs", new FormInputs());
+		map.put("requestHistory", new ArrayList<Request>());
 		
 		return "/dashboard/history";
 	}
@@ -87,14 +72,14 @@ public class DashboardController {
 		map.addAttribute("loggedUser", user);
 		map.put("requestHistory", requestRepository.findByUserAndDates(user,
 				formInputs.getDateFrom(), formInputs.getDateTo()));
-		map.put("deleteInputs", new FormInputs());
 		return "/dashboard/history";
 	}
 	
-	@PostMapping("/dashboard/history/delete/{id}")	
-	public String deleteSubmittedRequest(ModelMap map, @PathVariable("id") Long id) {
+	@RequestMapping(path = "/dashboard/history/delete/{id}")
+	public String deleteSubmittedRequest(@AuthenticationPrincipal User user, ModelMap map, @PathVariable("id") Long id) {
 		map.put("message", requestService.statusOfDeleteRequestById(id));
+		map.addAttribute("loggedUser", user);
 		
-		return "/dashboard/history";
+		return "dashboard";
 	}
 }
