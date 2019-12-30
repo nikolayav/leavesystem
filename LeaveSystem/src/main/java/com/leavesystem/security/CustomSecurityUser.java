@@ -15,6 +15,7 @@ public class CustomSecurityUser extends User implements UserDetails{
 	public CustomSecurityUser () {}
 	
 	public CustomSecurityUser(User user) {
+		this.setId(user.getId());
 		this.setAuthorities(user.getAuthorities());
 		this.setFirstName(user.getFirstName());
 		this.setMiddleName(user.getMiddleName());

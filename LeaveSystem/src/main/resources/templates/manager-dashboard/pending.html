@@ -219,7 +219,8 @@ table.table .avatar {
 .main-page-content {
 	position: relative;
 	left: 250px;
-	margin-left: 80px; margin-top : 38px;
+	margin-left: 80px;
+	margin-top: 38px;
 	margin-right: 40px;
 	margin-bottom: 40px;
 	margin-top: 38px;
@@ -254,8 +255,14 @@ table.table .avatar {
 	color: white;
 	background-color: #555;
 }
+
+.delete-icon {
+	
+}
 </style>
-<title>LeaveSystem Dashboard</title>
+<title>Manage Team Requests</title>
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
 	<div th:replace="fragments/header :: header"></div>
@@ -273,7 +280,7 @@ table.table .avatar {
 			<!-- Current page title -->
 			<div>
 				<p />
-				<h3>Dashboard</h3>
+				<h3>Manage Team Requests</h3>
 			</div>
 		</div>
 	</div>
@@ -288,8 +295,9 @@ table.table .avatar {
 				<li><a id="navigation-links" href="/dashboard/history">Request
 						history</a></li>
 			</ul>
-			<div th:if="${#strings.toUpperCase(loggedUser.getAuthorities()[0].getAuthority()) == 'ROLE_MANAGER'}"
-			style="border-top: solid thin #89895d;">
+			<div
+				th:if="${#strings.toUpperCase(loggedUser.getAuthorities()[0].getAuthority()) == 'ROLE_MANAGER'}"
+				style="border-top: solid thin #89895d;">
 				<ul id="link-box">
 					<li><a id="navigation-links" href="/manager-dashboard">Manager
 							Dashboard</a></li>
@@ -301,7 +309,7 @@ table.table .avatar {
 
 		<div class="column right-column-content main-page-content">
 			<!-- The page main content. Place everything page specific here -->
-			<p th:text="${message}"/>
+			
 			<!-- Insert scripts and other hidden elements here -->
 			<!-- End of page specific content -->
 		</div>
