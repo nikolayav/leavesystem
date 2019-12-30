@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.FutureOrPresent;
 
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
@@ -20,22 +23,25 @@ public class Request {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@FutureOrPresent
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-    private Date date_from;
+    private Date dateFrom;
 	
+	@FutureOrPresent
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-    private Date date_to;
+    private Date dateTo;
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
     private Date created;
 	
-	@Column(nullable = false)
-	private Boolean status;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 20)
+	private RequestStatus status;
 	
 	@Column(columnDefinition = "TEXT")
 	private String employeeComment;
@@ -43,7 +49,7 @@ public class Request {
 	@Column(columnDefinition = "TEXT")
 	private String managerComment;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 80)
 	private String standin;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -55,7 +61,12 @@ public class Request {
 	private LeaveType leaveType;
 
 	public Request() {
-		this.status = false; // Added default status
+		this.status = RequestStatus.Submitted; // Added default status
+	}
+	
+	public Request(User user) {
+		this();
+		this.user = user;
 	}
 	
 	public Long getId() {
@@ -66,20 +77,20 @@ public class Request {
 		this.id = id;
 	}
 
-	public Date getDate_from() {
-		return date_from;
+	public Date getDateFrom() {
+		return dateFrom;
 	}
 
-	public void setDate_from(Date date_from) {
-		this.date_from = date_from;
+	public void setDateFrom(Date dateFrom) {
+		this.dateFrom = dateFrom;
 	}
 
-	public Date getDate_to() {
-		return date_to;
+	public Date getDateTo() {
+		return dateTo;
 	}
 
-	public void setDate_to(Date date_to) {
-		this.date_to = date_to;
+	public void setDateTo(Date dateTo) {
+		this.dateTo = dateTo;
 	}
 
 	public Date getCreated() {
@@ -90,11 +101,11 @@ public class Request {
 		this.created = created;
 	}
 
-	public Boolean getStatus() {
+	public RequestStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(RequestStatus status) {
 		this.status = status;
 	}
 
@@ -143,8 +154,8 @@ public class Request {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + ((date_from == null) ? 0 : date_from.hashCode());
-		result = prime * result + ((date_to == null) ? 0 : date_to.hashCode());
+		result = prime * result + ((dateFrom == null) ? 0 : dateFrom.hashCode());
+		result = prime * result + ((dateTo == null) ? 0 : dateTo.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		result = prime * result + ((employeeComment == null) ? 0 : employeeComment.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -169,15 +180,15 @@ public class Request {
 				return false;
 		} else if (!created.equals(other.created))
 			return false;
-		if (date_from == null) {
-			if (other.date_from != null)
+		if (dateFrom == null) {
+			if (other.dateFrom != null)
 				return false;
-		} else if (!date_from.equals(other.date_from))
+		} else if (!dateFrom.equals(other.dateFrom))
 			return false;
-		if (date_to == null) {
-			if (other.date_to != null)
+		if (dateTo == null) {
+			if (other.dateTo != null)
 				return false;
-		} else if (!date_to.equals(other.date_to))
+		} else if (!dateTo.equals(other.dateTo))
 			return false;
 		if (user == null) {
 			if (other.user != null)

@@ -47,10 +47,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 		.authorizeRequests()
 		.antMatchers("/").permitAll()
-		.antMatchers("/manager-dashboard").hasRole("MANAGER")
+
+		.antMatchers("/manager-dashboard/**").hasRole("MANAGER")
 		.antMatchers("/admin-dashboard").hasRole("ADMIN")
+		.antMatchers("/dashboard/**").hasAnyRole("MANAGER", "USER")
 		.antMatchers("/css/**").permitAll()
-		.antMatchers("/dashboard").hasAnyRole("MANAGER", "USER")
 		.antMatchers("/adduser").hasRole("ADMIN")
 		.antMatchers("/delete/**").hasRole("ADMIN")
 		.antMatchers("/edit/**").hasRole("ADMIN")
