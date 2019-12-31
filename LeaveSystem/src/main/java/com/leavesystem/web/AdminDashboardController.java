@@ -119,7 +119,7 @@ public class AdminDashboardController {
 	    }
 	    
 	    userService.update(user, user.getRole());
-	    return "admin-dashboard";
+	    return "redirect:/admin-dashboard";
 	}
 	
 	@GetMapping("/pwreset/{id}")

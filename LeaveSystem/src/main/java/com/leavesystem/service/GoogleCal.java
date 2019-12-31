@@ -100,10 +100,16 @@ public class GoogleCal {
             }
         }
         
-        System.out.println(items.get(0).getId());
+        for (Event event : items) {
+        	System.out.println(event.getSummary());
+        	if (event.getSummary().equals("usertest usertest")) {
+            System.out.println(event.getId());
+        	break;
+        	}
+        }
     }
     
-    public void createEvent(String name, DateTime dateFrom, DateTime dateTo) throws GeneralSecurityException, IOException {
+    public String createEvent(String name, DateTime dateFrom, DateTime dateTo) throws GeneralSecurityException, IOException {
     	final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
@@ -122,10 +128,20 @@ public class GoogleCal {
     		    .setDateTime(dateTo)
     		    .setTimeZone("Europe/Sofia");
     		event.setEnd(end);
-
+    		
     		String calendarId = "primary";
     		event = service.events().insert(calendarId, event).execute();
-    		System.out.printf("Event created: %s\n", event.getHtmlLink());
+    		
+			return event.getId();
+    }
+    
+    public void deleteEvent(String calendarId) throws GeneralSecurityException, IOException {
+    	final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+    	Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+
+    		service.calendarList().delete(calendarId).execute();
     }
     
 }

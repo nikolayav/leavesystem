@@ -60,6 +60,8 @@ public class Request {
 	@JoinColumn(name = "leavetype_id", nullable = false)
 	private LeaveType leaveType;
 
+	private String googleCalendarEventId;
+	
 	public Request() {
 		this.status = RequestStatus.Submitted; // Added default status
 	}
@@ -147,6 +149,14 @@ public class Request {
 
 	public void setLeaveType(LeaveType leaveType) {
 		this.leaveType = leaveType;
+	}
+	
+	public String getGoogleCalendarEventId() {
+		return googleCalendarEventId;
+	}
+
+	public void setGoogleCalendarEventId(String googleCalendarEventId) {
+		this.googleCalendarEventId = googleCalendarEventId;
 	}
 
 	@Override

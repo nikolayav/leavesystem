@@ -35,7 +35,12 @@ public class LeaveRequestService {
 		return userRepo.findAllByRoleInAndIdNotIn(Arrays.asList("USER","MANAGER"), Arrays.asList(id));
 	}
 	
-	public void submitRequest(Request request, User user) {
+	public void submitRequest(Request request, User user) throws GeneralSecurityException, IOException {
+		
+		DateTime dt1 = new DateTime(request.getDateFrom());
+		DateTime dt2 = new DateTime(request.getDateTo());
+		GoogleCal googleCal = new GoogleCal();
+		request.setGoogleCalendarEventId(googleCal.createEvent(request.getEmployee().getFirstName() + " " + request.getEmployee().getLastName(), dt1, dt2));
 		requestRepo.save(request);
 		// call mailServerSendMail(Request request, User user, User user.getManager());
 	}
@@ -66,7 +71,9 @@ public class LeaveRequestService {
 		DateTime dt1 = new DateTime(request.getDateFrom());
 		DateTime dt2 = new DateTime(request.getDateTo());
 		GoogleCal googleCal = new GoogleCal();
-		googleCal.createEvent(request.getEmployee().getFirstName() + " " + request.getEmployee().getLastName(), dt1,dt2);
+		
+		request.setGoogleCalendarEventId(googleCal.createEvent(request.getEmployee().getFirstName() + " " + request.getEmployee().getLastName(), dt1, dt2));
+		
 		// call mailServerSendMail(Request request, User request.getEmployee(), User manager);
 		return "Request (id: " + request.getId() + ") status set to " + request.getStatus();
 	}
