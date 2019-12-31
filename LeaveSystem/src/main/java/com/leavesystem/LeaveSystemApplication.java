@@ -13,7 +13,7 @@ public class LeaveSystemApplication {
 
 	public static void main(String[] args) throws IOException, GeneralSecurityException {
 		SpringApplication.run(LeaveSystemApplication.class, args);
-		GoogleCal.test();
+//		GoogleCal.test();
 //		GoogleCal googleCal = new GoogleCal();
 //		googleCal.getTokens();
 	}

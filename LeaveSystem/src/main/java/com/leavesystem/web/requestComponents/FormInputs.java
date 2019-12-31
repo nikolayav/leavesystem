@@ -1,8 +1,10 @@
 package com.leavesystem.web.requestComponents;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import com.leavesystem.entity.*;
@@ -11,15 +13,17 @@ import com.leavesystem.entity.*;
 public class FormInputs {
 	private Long id;
 	private User user;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateFrom;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateTo;
 	private RequestStatus status;
 	private LeaveType leaveType;
 	private String comments;
 	
 	public FormInputs() {
-		this.dateFrom = Date.valueOf(LocalDate.now());
-		this.dateTo = Date.valueOf(LocalDate.now());
+		this.dateFrom = Timestamp.valueOf(LocalDateTime.now().withDayOfMonth(1));
+		this.dateTo = Timestamp.valueOf(LocalDateTime.now());
 	}
 	
 	public Long getId() {
