@@ -57,7 +57,7 @@ public class ManagerDashboardController {
 		map.addAttribute("loggedUser", user);
 		map.addAttribute("teamMembers", requestService.getTeamMembers(user));
 		map.addAttribute("formInputs", new FormInputs());
-		map.addAttribute("allPendingRequests", new ArrayList<Request>());
+		map.put("allPendingRequests", requestService.getTeamPendingRequests(user));
 		
 		return "manager-dashboard/pending";
 	}
@@ -66,7 +66,7 @@ public class ManagerDashboardController {
 	public String getPendingRequests(@AuthenticationPrincipal User user, ModelMap map, FormInputs formInputs) {
 		map.addAttribute("loggedUser", user);
 		map.addAttribute("teamMembers", requestService.getTeamMembers(user));
-		map.addAttribute("allPendingRequests", requestService.getUserPendingRequests(formInputs));
+		map.put("allPendingRequests", requestService.getUserPendingRequests(formInputs));
 		
 		return "/manager-dashboard/pending";
 	}

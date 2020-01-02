@@ -70,7 +70,7 @@ public class DashboardController {
 	public String viewRequestHistory(@AuthenticationPrincipal User user, ModelMap map) {
 		map.addAttribute("loggedUser", user);
 		map.addAttribute("formInputs", new FormInputs());
-		map.put("requestHistory", new ArrayList<Request>());
+		map.put("requestHistory", requestService.getAllRequests(user));
 		
 		return "/dashboard/history";
 	}

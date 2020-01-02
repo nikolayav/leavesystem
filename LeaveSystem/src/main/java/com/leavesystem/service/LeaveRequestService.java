@@ -41,7 +41,10 @@ public class LeaveRequestService {
 	public String submitRequestStatus(Request request, User user) throws GeneralSecurityException, IOException {
 		if (request.getDateFrom() == null || request.getDateTo() == null) {
 			return "Request submit failed! Please, fill both From date and To date fields!";
+		} else if(request.getDateTo().before(request.getDateFrom())) {
+			return "Request submit failed! Date to must be equal to or after Date from."; 
 		}
+		
 		requestRepo.save(request);
 
 		return "Request successfully submitted!";
@@ -99,9 +102,12 @@ public class LeaveRequestService {
 				return "Request with id: " + id + " has already been cancelled";
 			
 			if (leaveRequest.getStatus() == RequestStatus.Accepted) {
-				GoogleCal  googleCal = new GoogleCal();
-				System.out.println(leaveRequest.getGoogleCalendarEventId());
-				googleCal.deleteEvent(leaveRequest.getGoogleCalendarEventId());
+				GoogleCal googleCal = new GoogleCal();
+				try {
+					googleCal.deleteEvent(leaveRequest.getGoogleCalendarEventId());
+				} catch (Exception e) {
+					System.out.println("No Google Id recorded for this request!\n" + e.getMessage());
+				}
 			}
 			
 			leaveRequest.setStatus(RequestStatus.Cancelled);
@@ -132,20 +138,7 @@ public class LeaveRequestService {
 					+ request.getUser().getMiddleName() + " " + request.getUser().getLastName(), dt1, dt2));
 		}
 		requestRepo.save(request);
-		
-<<<<<<< .mine
-
-
-
-
-
-=======
-		DateTime dt1 = new DateTime(request.getDateFrom());
-		DateTime dt2 = new DateTime(request.getDateTo());
-		GoogleCal googleCal = new GoogleCal();
-		googleCal.createEvent(request.getUser().getFirstName() + " " + request.getUser().getLastName(), dt1,dt2);
 		// call mailServerSendMail(Request request, User request.getEmployee(), User manager);
->>>>>>> .theirs
 		return "Request (id: " + request.getId() + ") status set to " + request.getStatus();
 	}
 
@@ -155,5 +148,10 @@ public class LeaveRequestService {
 		}
 		return requestRepo.findByUserListStatusAndDates(Arrays.asList(formInputs.getUser()),
 				Arrays.asList(RequestStatus.Submitted), formInputs.getDateFrom(), formInputs.getDateTo());
+	}
+	
+	public List<Request> getTeamPendingRequests(User manager) {
+		return requestRepo.findByStatusInAndUserIn(Arrays.asList(RequestStatus.Submitted), 
+				userRepo.findAllByManager(manager));
 	}
 }
