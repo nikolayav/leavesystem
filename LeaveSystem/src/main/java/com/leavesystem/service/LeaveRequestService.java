@@ -133,6 +133,19 @@ public class LeaveRequestService {
 		}
 		requestRepo.save(request);
 		
+<<<<<<< .mine
+
+
+
+
+
+=======
+		DateTime dt1 = new DateTime(request.getDateFrom());
+		DateTime dt2 = new DateTime(request.getDateTo());
+		GoogleCal googleCal = new GoogleCal();
+		googleCal.createEvent(request.getUser().getFirstName() + " " + request.getUser().getLastName(), dt1,dt2);
+		// call mailServerSendMail(Request request, User request.getEmployee(), User manager);
+>>>>>>> .theirs
 		return "Request (id: " + request.getId() + ") status set to " + request.getStatus();
 	}
 

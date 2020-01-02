@@ -141,7 +141,7 @@ public class GoogleCal {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 
-    		service.calendarList().delete(calendarId).execute();
+    		service.events().delete("primary", calendarId).execute();
     }
     
 }
