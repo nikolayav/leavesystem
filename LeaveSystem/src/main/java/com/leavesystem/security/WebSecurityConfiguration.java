@@ -51,6 +51,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/manager-dashboard/**").hasRole("MANAGER")
 		.antMatchers("/admin-dashboard").hasRole("ADMIN")
 		.antMatchers("/dashboard/**").hasAnyRole("MANAGER", "USER")
+		.antMatchers("/dashboard/history").hasAnyRole("MANAGER","USER")
+		.antMatchers("/dashboard/history/cancel/**").hasAnyRole("MANAGER", "USER")
 		.antMatchers("/css/**").permitAll()
 		.antMatchers("/adduser").hasRole("ADMIN")
 		.antMatchers("/delete/**").hasRole("ADMIN")

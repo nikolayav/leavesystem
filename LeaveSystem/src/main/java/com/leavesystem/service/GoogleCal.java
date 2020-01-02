@@ -35,7 +35,7 @@ public class GoogleCal {
      * Global instance of the scopes required by this quick start.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final List<String> SCOPES = Collections.singletonList("https://www.googleapis.com/auth/calendar.events");
+    private static final List<String> SCOPES = Collections.singletonList("https://www.googleapis.com/auth/calendar");
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     /**
@@ -131,7 +131,7 @@ public class GoogleCal {
     		
     		String calendarId = "primary";
     		event = service.events().insert(calendarId, event).execute();
-    		
+    		System.out.println(event.getId());
 			return event.getId();
     }
     

@@ -6,12 +6,57 @@
 <title>Employee Leave System Add User</title>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Muli" />
 <style>
 body {
 	font-family: "Open Sans", sans-serif;
 	height: 100vh;
 	background-color: #CACACA;
+}
+
+h1 {
+  font-family: Muli;
+  font-size: 24px;
+  font-style: normal;
+  font-variant: small-caps;
+  font-weight: 400;
+  line-height: 26.4px;
+}
+
+h3 {
+  font-family: Muli;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 15.4px;
+}
+
+p {
+  font-family: Muli;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+blockquote {
+  font-family: Muli;
+  font-size: 21px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+pre {
+  font-family: Muli;
+  font-size: 13px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 18.5667px;
 }
 
 .wrapper {
@@ -247,7 +292,22 @@ body {
 	border-top-color: #ccc;
 }
 </style>
+<script>
 
+var password = document.getElementById("password")
+, confirm_password = document.getElementById("confirm_password");
+
+function validatePassword(){
+if(password.value != confirm_password.value) {
+  confirm_password.setCustomValidity("Passwords Don't Match");
+} else {
+  confirm_password.setCustomValidity('');
+}
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
 </head>
 <body>
   <div th:replace="fragments/header :: header"></div>
@@ -266,14 +326,18 @@ body {
 
         <input type="hidden" class="form-control" th:field="${user.username}"> <span th:errors="*{username}" class="error text-danger"></span>
 
-
-        <div class="col">
-          <span id="show-password-container"> <span></span> Show Password
-          </span> <label>New Password</label> <input type="password" class="form-control" th:field="${user.password}" id="password" required="required"> <span th:errors="*{password}"
+<div class="form-row">
+        
+          <label>New Password</label> <input type="password" class="form-control" th:field="${user.password}" id="password" required="required"> <span th:errors="*{password}"
             class="error text-danger"></span>
-        </div>
+        
+        
+                
+          <label>Confirm Password</label> <input type="password" class="form-control" th:field="${user.password}" id="confirm_password" required="required"> <span th:errors="*{password}"
+            class="error text-danger"></span>
+        
       </div>
-
+</div>
 
       <div class="form-row p-3 mb-2 bg-white text-dark" style="margin-top: -2em;">
         <div class="col">
