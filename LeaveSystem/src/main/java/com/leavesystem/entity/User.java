@@ -60,6 +60,7 @@ public class User {
 	private String position;
 	
 	@NotBlank(message = "Please, select a role")
+	@Pattern(regexp = "Manager|User|Admin")
 	private String role;
 	
 	@NotNull(message = "Please, select a manager")

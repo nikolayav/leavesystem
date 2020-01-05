@@ -45,8 +45,19 @@ public class LeaveRequestService {
 			return "Request submit failed! Date to must be equal to or after Date from."; 
 		}
 		
+		int daysToRemove = request.calculateTotalDaysOfLeaveSubmit();
+		int paidLeaveDays = user.getPaidLeaveDaysLeft();
+		
+		if (request.getLeaveType().getType().equals("Paid Leave") && daysToRemove > paidLeaveDays) {
+			return "Request submit failed! Your selected period exceeds the paid leave days you have.\n "
+					+ "You have " + user.getPaidLeaveDaysLeft() + " paid leave days left.";
+		}
+		
+		user.setPaidLeaveDaysLeft(paidLeaveDays - daysToRemove);
+		
 		requestRepo.save(request);
-
+		userRepo.save(user); // updates Paid Leave Days Left for the current User submitting the request
+		
 		return "Request successfully submitted!";
 	}
 
@@ -80,8 +91,7 @@ public class LeaveRequestService {
 		
 		RequestStatus requestStatus = requestRepo.findById(id).get().getStatus();
 		if (requestStatus != RequestStatus.Submitted) {
-			return "Error deleting selected request: Request with id: " + id + " has already been "
-					+ requestStatus.toString() + " by the responsible manager!";
+			return "Error deleting selected request: Only requests in status Submitted can be deleted!";
 		}
 		requestRepo.deleteById(id);
 
@@ -154,4 +164,6 @@ public class LeaveRequestService {
 		return requestRepo.findByStatusInAndUserIn(Arrays.asList(RequestStatus.Submitted), 
 				userRepo.findAllByManager(manager));
 	}
+
+	
 }

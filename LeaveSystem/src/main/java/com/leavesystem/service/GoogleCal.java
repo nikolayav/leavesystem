@@ -22,9 +22,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+
+import java.time.Period;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.joda.time.Days;
+import org.joda.time.Duration;
+//import org.springframework.format.datetime.joda.*;
 
 public class GoogleCal {
     private static final String APPLICATION_NAME = "LeaveSystem Calendar";
@@ -131,8 +137,9 @@ public class GoogleCal {
     		
     		String calendarId = "primary";
     		event = service.events().insert(calendarId, event).execute();
-    		System.out.println(event.getId());
+    		
 			return event.getId();
+			
     }
     
     public void deleteEvent(String calendarId) throws GeneralSecurityException, IOException {

@@ -1,5 +1,8 @@
 package com.leavesystem.entity;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -55,11 +58,43 @@ public class Request {
 	@JoinColumn(name = "users_id", nullable = false)
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "leavetype_id", nullable = false)
 	private LeaveType leaveType;
 
 	private String googleCalendarEventId;
+	
+	public int calculateTotalDaysOfLeaveSubmit() {
+		
+		Date dateStart = this.getDateFrom();
+		Date dateEnd = this.getDateTo();
+		
+		LocalDate localDateStart = dateStart.toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();
+		
+		LocalDate localDateTo = dateEnd.toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();
+		
+		
+		Period p = Period.between(localDateStart, localDateTo) ;
+		int leaveDays = p.getDays() + 1;
+		
+		int totalDays = leaveDays;
+		
+		for (int i = 0; i < leaveDays; i++) {
+			LocalDate date = localDateStart.plusDays(i);
+			switch (date.getDayOfWeek()) {
+			case SATURDAY:
+			case SUNDAY:
+				totalDays -= 1;
+				break;
+			}
+		}
+
+		return totalDays;
+	}
 	
 	public Request() {
 		this.status = RequestStatus.Submitted; // Added default status

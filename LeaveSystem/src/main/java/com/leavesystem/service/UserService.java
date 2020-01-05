@@ -81,4 +81,32 @@ public class UserService {
 			userRepo.deleteById(id);
 		}
 	}
+	
+	public void deductPaidLeaveDays(User user, int days) {
+		User currentUser = null;
+		Long userId = user.getId();
+		if (userId != null) {
+			Optional<User> userOpt = userRepo.findById(userId);
+			currentUser = userOpt.get();
+			
+			if (currentUser.getPaidLeaveDaysLeft() >= days) {
+				currentUser.setPaidLeaveDaysLeft(currentUser.getPaidLeaveDaysLeft() - days);
+			}
+		}
+		
+		userRepo.save(currentUser);
+	}
+	
+	public void returnPaidLeaveDays(User user, int days) {
+		User currentUser = null;
+		Long userId = user.getId();
+		if (userId != null) {
+			Optional<User> userOpt = userRepo.findById(userId);
+			currentUser = userOpt.get();
+			currentUser.setPaidLeaveDaysLeft(currentUser.getPaidLeaveDaysLeft() + days);
+		}
+		
+		userRepo.save(currentUser);		
+	}
+	
 }
