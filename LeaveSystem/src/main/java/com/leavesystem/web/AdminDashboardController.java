@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,9 +37,8 @@ public class AdminDashboardController {
 	private UserRepository userRepo;
 		
 	@GetMapping("/admin-dashboard")
-	public String showForm(Model model) {
-		User user = new User();
-		model.addAttribute("user", user);
+	public String showForm(@AuthenticationPrincipal User user, Model model) {
+		model.addAttribute("loggedUser", user);
 	    
 	    List<User> userList = new ArrayList<>();
 	    userRepo.findAll().forEach(userList::add);
@@ -48,9 +48,10 @@ public class AdminDashboardController {
 	}
 	
 	@GetMapping("/adduser")
-	public String showAddUserForm(Model model) {
+	public String showAddUserForm(@AuthenticationPrincipal User loggedUser, Model model) {
 		User user = new User();
 		model.addAttribute("user", user);
+		model.addAttribute("loggedUser", loggedUser);
 
 		List<User> managerList = new ArrayList<>();
 		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
@@ -67,10 +68,13 @@ public class AdminDashboardController {
     }
 	
 	@PostMapping("/adduser")
-	public String addUserPost(@Valid User user, BindingResult errors, RedirectAttributes redirectAttributes, Model model) {
+	public String addUserPost(@Valid User user, BindingResult errors, RedirectAttributes redirectAttributes, Model model, @AuthenticationPrincipal User loggedUser) {
+		
+		
 		if (errors.hasErrors()) {
 		    redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", errors);
 		    redirectAttributes.addFlashAttribute("createAccountModel", user);
+		    model.addAttribute("loggedUser", loggedUser);
 		    
 			List<User> managerList = new ArrayList<>();
 			userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
@@ -84,7 +88,8 @@ public class AdminDashboardController {
 	}
 	
 	@GetMapping("/edit/{id}")
-	public String editUserGet(@PathVariable("id") Long id, Model model) {
+	public String editUserGet(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal User loggedUser) {
+		model.addAttribute("loggedUser", loggedUser);
 		List<User> managerList = new ArrayList<>();
 		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
 		model.addAttribute("managers", managerList);
@@ -101,12 +106,13 @@ public class AdminDashboardController {
 	}
 	
 	@PostMapping(value="/edit/{id}")
-	public String editUserPost(@Valid @ModelAttribute User user, BindingResult errors, Model model, Long id) throws NotFoundException {
-		
+	public String editUserPost(@Valid @ModelAttribute User user, BindingResult errors, Model model, Long id, @AuthenticationPrincipal User loggedUser) throws NotFoundException {
+		model.addAttribute("loggedUser", loggedUser);
 	    if (errors.hasErrors()) {
 			List<User> managerList = new ArrayList<>();
 			userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
 			model.addAttribute("managers", managerList);
+			model.addAttribute("loggedUser", loggedUser);
 			
 			for (int i = 0; i < managerList.size(); i++) {
 				if (id == managerList.get(i).getId()) {
@@ -123,10 +129,11 @@ public class AdminDashboardController {
 	}
 	
 	@GetMapping("/pwreset/{id}")
-	public String pwResetGet(@PathVariable("id") Long id, Model model) {
+	public String pwResetGet(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal User loggedUser) {
 		List<User> managerList = new ArrayList<>();
 		userRepo.findAllByAuthoritiesAuthority("ROLE_MANAGER").forEach(managerList::add);
 		model.addAttribute("managers", managerList);
+		model.addAttribute("loggedUser", loggedUser);
 		
 		model.addAttribute("user", userRepo.findById(id));
 	    return "pwreset";
