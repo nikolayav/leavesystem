@@ -2,8 +2,6 @@ package com.leavesystem.web;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,13 +28,7 @@ import javassist.NotFoundException;
 public class ManagerDashboardController {
 
 	@Autowired
-	private SqlDateConvertService dateConvert;
-
-	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private UserRepository userRepo;
 
 	@Autowired
 	private LeaveRequestService requestService;

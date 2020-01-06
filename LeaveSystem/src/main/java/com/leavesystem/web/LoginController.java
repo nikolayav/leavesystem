@@ -12,7 +12,7 @@ public class LoginController {
 	}
 
 	@GetMapping("/")
-	public String rootView( ) {
-		return "index";
+	public String rootView() {
+		return "redirect:/login";
 	}
 }

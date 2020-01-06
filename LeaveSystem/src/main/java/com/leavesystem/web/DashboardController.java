@@ -73,6 +73,7 @@ public class DashboardController {
 		if (userOpt.isPresent()) {
 			currentUser = userOpt.get();
 		} else {
+			map.put("message", "Error submitting the request! Such user does not exist!");
 			return "dashboard";
 		}
 
