@@ -2,6 +2,7 @@
 <html xmlns:th="http://thymeleaf.org">
 <script th:replace="fragments/header :: headerElement"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
 <head>
 <style type="text/css">
 body {
@@ -488,6 +489,36 @@ table.table .avatar {
 	cursor: pointer;
 	font-size: 20px;
 }
+/*----------------------sidebar-menu-------------------------*/
+.sidebar-wrapper .sidebar-menu {
+	padding-bottom: 10px;
+}
+
+.sidebar-wrapper .sidebar-menu .header-menu span {
+	font-weight: bold;
+	font-size: 14px;
+	padding: 15px 20px 5px 20px;
+	display: inline-block;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a {
+	display: inline-block;
+	width: 100%;
+	text-decoration: none;
+	position: relative;
+	padding: 8px 30px 8px 20px;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a i {
+	margin-right: 10px;
+	font-size: 12px;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 4px;
+}
+
 /*--------------------sidebar-header----------------------*/
 .sidebar-wrapper .sidebar-header {
 	padding: 20px;
@@ -680,50 +711,7 @@ table.table .avatar {
 		}
 
 	}
-	$(document)
-			.ready(
-					function() {
-						$('#rangeForm')
-								.bootstrapValidator(
-										{
-											feedbackIcons : {
-												valid : 'glyphicon glyphicon-ok',
-												invalid : 'glyphicon glyphicon-remove',
-												validating : 'glyphicon glyphicon-refresh'
-											},
-											fields : {
-												date : {
-													validators : {
-														date : {
-															message : 'The date is not valid',
-															format : 'YYYY/MM/DD'
-														},
-														callback : {
-															message : 'The date is not in the range',
-															callback : function(
-																	value,
-																	validator) {
-																var m = new moment(
-																		value,
-																		'YYYY/MM/DD',
-																		true);
-																if (!m
-																		.isValid()) {
-																	return false;
-																}
-																return m
-																		.isAfter('2000/01/01')
-																		&& m
-																				.isBefore('2020/12/30');
-															}
-														}
-													}
-												}
-											}
-										});
-					});
 </script>
-
 <title>Leave Request Template</title>
 </head>
 <div class="page-wrapper chiller-theme toggled">
@@ -739,17 +727,17 @@ table.table .avatar {
         </div>
       </div>
       <div class="sidebar-menu">
-        <ul>
-          <li class="sidebar-dropdown"><a href="/dashboard"><span>Dashboard</span></a></li>
-          <li class="sidebar-dropdown"><a href="/dashboard/newrequest"><span>New Leave Request</span></a></li>
-          <li class="sidebar-dropdown"><a href="/dashboard/history"><span>Request History</span></a></li>
+        <ul>  
+          <li class="sidebar-dropdown"><a href="/dashboard"><i class="fas fa-table"></i><span>Dashboard</span></a></li>
+          <li class="sidebar-dropdown"><a href="/dashboard/newrequest"><i class="fas fa-walking"></i><span>New Leave Request</span></a></li>
+          <li class="sidebar-dropdown"><a href="/dashboard/history"><i class="fas fa-clipboard-list"></i><span>Request History</span></a></li>
         </ul>
       </div>
       <div th:if="${#strings.toUpperCase(loggedUser.getAuthorities()[0].getAuthority()) == 'ROLE_MANAGER'}">
         <div class="sidebar-menu">
           <ul>
-            <li class="sidebar-dropdown"><a href="/manager-dashboard">Manager Dashboard</a></li>
-            <li class="sidebar-dropdown"><a href="/manager-dashboard/pending">Manage Team Requests</a></li>
+            <li class="sidebar-dropdown"><a href="/manager-dashboard"><i class="fas fa-table"></i>Manager Dashboard</a></li>
+            <li class="sidebar-dropdown"><a href="/manager-dashboard/pending"><i class="fas fa-tasks"></i>Manage Team Requests</a></li>
           </ul>
         </div>
       </div>
@@ -757,7 +745,7 @@ table.table .avatar {
         <ul>
           <li class="sidebar-dropdown">
             <form action="/logout" method="post" id="logoutform">
-              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> <a href="#" onclick="document.getElementById('logoutform').submit()"> <span>Logout</span></a>
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> <a href="#" onclick="document.getElementById('logoutform').submit()"> <i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
             </form>
           </li>
         </ul>
