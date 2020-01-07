@@ -1,9 +1,11 @@
 package com.leavesystem.entity;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.FutureOrPresent;
 
+import org.joda.time.Days;
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Request {
@@ -64,7 +67,7 @@ public class Request {
 
 	private String googleCalendarEventId;
 	
-	public int calculateTotalDaysOfLeaveSubmit() {
+	public long calculateTotalDaysOfLeaveSubmit() {
 		
 		Date dateStart = this.getDateFrom();
 		Date dateEnd = this.getDateTo();
@@ -77,11 +80,8 @@ public class Request {
 			      .atZone(ZoneId.systemDefault())
 			      .toLocalDate();
 		
-		
-		Period p = Period.between(localDateStart, localDateTo) ;
-		int leaveDays = p.getDays() + 1;
-		
-		int totalDays = leaveDays;
+		long leaveDays = ChronoUnit.DAYS.between(localDateStart, localDateTo);
+		long totalDays = leaveDays;
 		
 		for (int i = 0; i < leaveDays; i++) {
 			LocalDate date = localDateStart.plusDays(i);

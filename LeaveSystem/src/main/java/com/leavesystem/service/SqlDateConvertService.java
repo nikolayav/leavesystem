@@ -3,6 +3,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,11 +34,8 @@ public class SqlDateConvertService {
 		
 		LocalDate localDateTo = dateEnd.toLocalDate();
 		
-		
-		Period p = Period.between(localDateStart, localDateTo) ;
-		int leaveDays = p.getDays() + 1;
-		
-		int totalDays = leaveDays;
+		long leaveDays = ChronoUnit.DAYS.between(localDateStart, localDateTo);
+		long totalDays = leaveDays;
 		
 		for (int i = 0; i < leaveDays; i++) {
 			LocalDate date = localDateStart.plusDays(i);
@@ -49,7 +47,7 @@ public class SqlDateConvertService {
 			}
 		}
 
-		return totalDays;
+		return (int) totalDays;
 	}
 	
 }

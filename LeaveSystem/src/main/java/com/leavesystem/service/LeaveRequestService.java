@@ -45,15 +45,15 @@ public class LeaveRequestService {
 			return "Request submit failed! Date to must be equal to or after Date from."; 
 		}
 		
-		int daysToRemove = request.calculateTotalDaysOfLeaveSubmit();
+		int workingDays = (int) request.calculateTotalDaysOfLeaveSubmit();
 		int paidLeaveDays = user.getPaidLeaveDaysLeft();
 		
-		if (request.getLeaveType().getType().equals("Paid Leave") && daysToRemove > paidLeaveDays) {
+		if (request.getLeaveType().getType().equals("Paid Leave") && workingDays > paidLeaveDays) {
 			return "Request submit failed! Your selected period exceeds the paid leave days you have.\n "
 					+ "You have " + user.getPaidLeaveDaysLeft() + " paid leave days left.";
 		}
 		
-		user.setPaidLeaveDaysLeft(paidLeaveDays - daysToRemove);
+		user.setPaidLeaveDaysLeft(paidLeaveDays - workingDays);
 		
 		requestRepo.save(request);
 		userRepo.save(user); // updates Paid Leave Days Left for the current User submitting the request

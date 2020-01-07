@@ -56,7 +56,7 @@ public class ManagerDashboardController {
 		map.addAttribute("loggedUser", user);
 
 		if (request.getStatus() == RequestStatus.Rejected && request.getLeaveType().getType().equals("Paid Leave")) {
-			int days = request.calculateTotalDaysOfLeaveSubmit();
+			int days = (int) request.calculateTotalDaysOfLeaveSubmit();
 			User userToReturnPL = request.getUser();
 
 			userService.returnPaidLeaveDays(userToReturnPL, days);
