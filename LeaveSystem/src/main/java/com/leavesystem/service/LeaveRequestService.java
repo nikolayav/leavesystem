@@ -2,9 +2,11 @@ package com.leavesystem.service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,7 +79,7 @@ public class LeaveRequestService {
 		return requestRepo.findByUser(user);
 	}
 
-	public List<Request> findByUserAndDates(User user, Date dateFrom, Date dateTo) {
+	public List<Request> findByUserAndDates(User user, java.util.Date dateFrom, java.util.Date dateTo) {
 		if (dateFrom == null || dateTo == null) {
 			return new ArrayList<Request>();
 		}
@@ -140,8 +142,12 @@ public class LeaveRequestService {
 
 		if (request.getStatus() == RequestStatus.Accepted) {
 
+			Instant dateToInstant = request.getDateTo().toInstant().plusSeconds(86399);
+			
+			Date updatedDateTo = Date.from(dateToInstant);
+			
 			DateTime dt1 = new DateTime(request.getDateFrom());
-			DateTime dt2 = new DateTime(request.getDateTo());
+			DateTime dt2 = new DateTime(updatedDateTo);
 			GoogleCal googleCal = new GoogleCal();
 
 			request.setGoogleCalendarEventId(googleCal.createEvent(request.getUser().getFirstName() + " "

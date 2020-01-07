@@ -9,21 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.leavesystem.entity.Request;
-import com.leavesystem.repositories.LeaveTypeRepository;
-import com.leavesystem.repositories.RequestRepository;
-import com.leavesystem.repositories.UserRepository;
 
 @Service
 public class SqlDateConvertService {
-	
-	@Autowired
-	private UserRepository userRepo;
-
-	@Autowired
-	private RequestRepository requestRepo;
-
-	@Autowired
-	private LeaveTypeRepository leaveTypeRepo;
 	
 	public int calculateTotalDaysOfLeaveReturn(Request request) {
 		
@@ -31,10 +19,9 @@ public class SqlDateConvertService {
 		Date dateEnd = (Date) request.getDateTo();
 		
 		LocalDate localDateStart = dateStart.toLocalDate();
-		
 		LocalDate localDateTo = dateEnd.toLocalDate();
 		
-		long leaveDays = ChronoUnit.DAYS.between(localDateStart, localDateTo);
+		long leaveDays = ChronoUnit.DAYS.between(localDateStart, localDateTo) + 1;
 		long totalDays = leaveDays;
 		
 		for (int i = 0; i < leaveDays; i++) {

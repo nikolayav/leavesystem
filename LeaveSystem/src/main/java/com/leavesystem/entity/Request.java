@@ -1,8 +1,6 @@
 package com.leavesystem.entity;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 import java.time.temporal.ChronoUnit;
@@ -19,9 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.FutureOrPresent;
 
-import org.joda.time.Days;
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Request {
@@ -80,7 +76,7 @@ public class Request {
 			      .atZone(ZoneId.systemDefault())
 			      .toLocalDate();
 		
-		long leaveDays = ChronoUnit.DAYS.between(localDateStart, localDateTo);
+		long leaveDays = ChronoUnit.DAYS.between(localDateStart, localDateTo) + 1;
 		long totalDays = leaveDays;
 		
 		for (int i = 0; i < leaveDays; i++) {

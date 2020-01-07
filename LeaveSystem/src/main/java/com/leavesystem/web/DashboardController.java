@@ -3,10 +3,13 @@ package com.leavesystem.web;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.JodaTimeConverters.DateToDateTimeConverter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -76,7 +79,7 @@ public class DashboardController {
 			map.put("message", "Error submitting the request! Such user does not exist!");
 			return "dashboard";
 		}
-
+		
 		request.setUser(currentUser);
 		request.setCreated(Timestamp.valueOf(LocalDateTime.now()));
 		map.put("message", requestService.submitRequestStatus(request, currentUser));
